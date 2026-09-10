@@ -1,12 +1,24 @@
-# AWS CLI & kubectl — Guía Profesional
+# DevOps Toolkit — Guía Profesional
 
 <p align="center">
   <a href="https://aws.amazon.com/cli/" target="_blank" rel="noreferrer">
-    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="Amazon Web Services" width="280" />
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="Amazon Web Services" width="165" />
   </a>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;
   <a href="https://kubernetes.io/docs/reference/kubectl/" target="_blank" rel="noreferrer">
-    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/kubernetes/kubernetes-plain-wordmark.svg" alt="Kubernetes" width="220" />
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/kubernetes/kubernetes-plain-wordmark.svg" alt="Kubernetes" width="125" />
+  </a>
+  &nbsp;&nbsp;&nbsp;
+  <a href="https://developer.hashicorp.com/terraform" target="_blank" rel="noreferrer">
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/terraform/terraform-original-wordmark.svg" alt="Terraform" width="135" />
+  </a>
+  &nbsp;&nbsp;&nbsp;
+  <a href="https://helm.sh/docs/" target="_blank" rel="noreferrer">
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/helm/helm-original.svg" alt="Helm" width="72" />
+  </a>
+  &nbsp;&nbsp;&nbsp;
+  <a href="https://docs.github.com/actions" target="_blank" rel="noreferrer">
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/githubactions/githubactions-original.svg" alt="GitHub Actions" width="72" />
   </a>
 </p>
 
@@ -17,11 +29,20 @@
   <a href="https://kubernetes.io/docs/reference/kubectl/" target="_blank" rel="noreferrer">
     <img src="https://img.shields.io/badge/kubectl-Kubernetes-326CE5?logo=kubernetes&logoColor=white" alt="kubectl" />
   </a>
-  <img src="https://img.shields.io/badge/Idioma-Español-informational" alt="Español" />
+  <a href="https://developer.hashicorp.com/terraform" target="_blank" rel="noreferrer">
+    <img src="https://img.shields.io/badge/Terraform-IaC-844FBA?logo=terraform&logoColor=white" alt="Terraform" />
+  </a>
+  <a href="https://helm.sh/docs/" target="_blank" rel="noreferrer">
+    <img src="https://img.shields.io/badge/Helm-Kubernetes-0F1689?logo=helm&logoColor=white" alt="Helm" />
+  </a>
+  <a href="https://docs.github.com/actions" target="_blank" rel="noreferrer">
+    <img src="https://img.shields.io/badge/GitHub%20Actions-CI%2FCD-2088FF?logo=githubactions&logoColor=white" alt="GitHub Actions" />
+  </a>
+  <img src="https://img.shields.io/badge/Idioma-Espa%C3%B1ol-informational" alt="Español" />
 </p>
 
 <p align="center">
-  <strong>Guía práctica en español para administrar AWS desde la terminal y operar clusters Kubernetes con kubectl.</strong>
+  <strong>Guía práctica en español para AWS, Kubernetes, Terraform, Helm y pipelines CI/CD.</strong>
 </p>
 
 <p align="center">
@@ -32,14 +53,17 @@
 
 ## Objetivo
 
-Este repositorio está pensado como **guía de aprendizaje, referencia operativa y cheat sheet** para dos herramientas fundamentales de infraestructura y DevOps:
+Este repositorio funciona como **guía de aprendizaje, referencia operativa y cheat sheet DevOps**. Reúne herramientas y flujos que normalmente se usan en conjunto en entornos Cloud y Kubernetes:
 
-- **AWS CLI v2**, para trabajar con servicios de Amazon Web Services desde la terminal;
-- **kubectl**, para consultar, desplegar, modificar, depurar y administrar recursos de Kubernetes.
+- **AWS CLI v2**, para operar servicios de Amazon Web Services desde terminal;
+- **kubectl**, para administrar recursos y workloads Kubernetes;
+- **Terraform**, para Infrastructure as Code;
+- **Helm**, para empaquetado, parametrización y releases Kubernetes;
+- **Amazon EKS**, desde acceso básico hasta operación avanzada;
+- **GitHub Actions**, para ejemplos de CI/CD hacia ECR y EKS;
+- **Troubleshooting**, con casos reales y secuencias de diagnóstico.
 
-No intenta reemplazar la documentación oficial. La idea es ofrecer una capa más práctica: explicar **qué hace cada comando, cuándo usarlo, qué riesgo tiene y cómo encaja en un flujo real**.
-
-> AWS ofrece cientos de servicios y miles de operaciones. Por eso esta guía cubre de forma completa la mecánica de AWS CLI y profundiza en los servicios de uso más frecuente. Para operaciones específicas de cualquier servicio se enlaza siempre la referencia oficial completa.
+No intenta reemplazar la documentación oficial. La guía agrega una capa práctica: **qué hace cada herramienta, cuándo usarla, cómo combinarla con las demás y cómo diagnosticar fallas reales**.
 
 ---
 
@@ -47,133 +71,153 @@ No intenta reemplazar la documentación oficial. La idea es ofrecer una capa má
 
 | Área | Capítulo | Contenido |
 | --- | --- | --- |
-| AWS CLI | [01 — Fundamentos, instalación y configuración](docs/aws/01-fundamentos-instalacion-configuracion.md) | Instalación, sintaxis, ayuda, región, configuración inicial y conceptos básicos |
-| AWS CLI | [02 — Credenciales, perfiles, salida y consultas](docs/aws/02-credenciales-perfiles-output.md) | IAM, SSO, perfiles, variables, `--query`, JMESPath, JSON, table y text |
-| AWS CLI | [03 — Servicios esenciales](docs/aws/03-servicios-esenciales.md) | STS, IAM, S3, EC2, ECR, ECS, EKS, Lambda, CloudWatch, SSM, RDS, DynamoDB, Route 53, CloudFormation y más |
-| AWS CLI | [04 — Automatización, seguridad y troubleshooting](docs/aws/04-automatizacion-seguridad-troubleshooting.md) | Bash/PowerShell, paginación, retries, dry-run, seguridad, debug y errores frecuentes |
-| kubectl | [05 — Fundamentos, kubeconfig y contexts](docs/kubectl/01-fundamentos-config-contextos.md) | Instalación, sintaxis, clusters, contexts, namespaces y configuración |
-| kubectl | [06 — Recursos y workloads](docs/kubectl/02-recursos-workloads.md) | get, describe, create, apply, edit, patch, delete, deployments, jobs, services, configmaps y secrets |
-| kubectl | [07 — Observabilidad, debug y operación](docs/kubectl/03-observabilidad-debug-operacion.md) | logs, exec, port-forward, top, events, rollout, scale, drain, cordon y diagnóstico |
-| kubectl | [08 — Referencia de comandos](docs/kubectl/04-referencia-comandos.md) | Índice explicado de los comandos principales de kubectl |
-| AWS + Kubernetes | [09 — EKS con AWS CLI y kubectl](docs/eks/01-aws-eks-kubectl.md) | Kubeconfig, acceso, ECR, diagnóstico y flujo de trabajo EKS |
-| Consulta rápida | [Cheat Sheet](docs/cheatsheet.md) | Comandos de uso cotidiano de AWS CLI y kubectl |
+| AWS CLI | [01 — Fundamentos, instalación y configuración](docs/aws/01-fundamentos-instalacion-configuracion.md) | Instalación, sintaxis, ayuda, región y configuración inicial |
+| AWS CLI | [02 — Credenciales, perfiles, salida y consultas](docs/aws/02-credenciales-perfiles-output.md) | IAM, SSO, perfiles, variables, JMESPath y outputs |
+| AWS CLI | [03 — Servicios esenciales](docs/aws/03-servicios-esenciales.md) | STS, IAM, S3, EC2, ECR, ECS, EKS, Lambda, CloudWatch, SSM, RDS, DynamoDB y más |
+| AWS CLI | [04 — Automatización, seguridad y troubleshooting](docs/aws/04-automatizacion-seguridad-troubleshooting.md) | Bash/PowerShell, retries, dry-run, seguridad y diagnóstico |
+| kubectl | [05 — Fundamentos, kubeconfig y contexts](docs/kubectl/01-fundamentos-config-contextos.md) | Clusters, contexts, namespaces y configuración |
+| kubectl | [06 — Recursos y workloads](docs/kubectl/02-recursos-workloads.md) | Deployments, Jobs, Services, ConfigMaps, Secrets y storage |
+| kubectl | [07 — Observabilidad, debug y operación](docs/kubectl/03-observabilidad-debug-operacion.md) | Logs, exec, port-forward, events, rollout, scale y nodos |
+| kubectl | [08 — Referencia de comandos](docs/kubectl/04-referencia-comandos.md) | Índice explicado de los comandos principales |
+| EKS | [09 — EKS con AWS CLI y kubectl](docs/eks/01-aws-eks-kubectl.md) | Kubeconfig, acceso, ECR y flujo básico EKS |
+| EKS | [10 — Operación avanzada de EKS](docs/eks/02-operacion-avanzada.md) | Access Entries, Node Groups, add-ons, upgrades, Pod Identity y diagnóstico |
+| Terraform | [11 — Fundamentos, instalación y workflow](docs/terraform/01-fundamentos-instalacion-workflow.md) | HCL, providers, init, plan, apply, variables y outputs |
+| Terraform | [12 — State, backends e importación](docs/terraform/02-state-backends-import.md) | State remoto, locking, import, drift y workspaces |
+| Terraform + AWS | [13 — AWS, módulos, seguridad y troubleshooting](docs/terraform/03-aws-modulos-seguridad-troubleshooting.md) | AWS Provider, módulos, lifecycle, secretos y EKS |
+| Helm | [14 — Helm: charts y operación profesional](docs/helm/01-fundamentos-charts-operacion.md) | Charts, releases, repos, install, upgrade, rollback, OCI y buenas prácticas |
+| Troubleshooting | [15 — Casos reales](docs/troubleshooting/01-casos-reales.md) | Unauthorized, Forbidden, CrashLoopBackOff, ImagePullBackOff, Pending, DNS, Terraform, Helm y EKS |
+| CI/CD | [16 — GitHub Actions + Kubernetes](docs/cicd/01-github-actions-kubernetes.md) | OIDC, ECR, EKS, kubectl, Helm, ambientes, rollback y seguridad |
+| Consulta rápida | [Cheat Sheet](docs/cheatsheet.md) | AWS CLI, kubectl, Terraform y Helm |
+
+---
+
+# Stack DevOps de referencia
+
+```text
+GitHub
+  │
+  ▼
+GitHub Actions
+  │
+  ├── test / lint / build
+  ├── Terraform plan/apply
+  ├── Docker build
+  └── push image
+          │
+          ▼
+         ECR
+          │
+          ▼
+         EKS
+          │
+     ┌────┴────┐
+     ▼         ▼
+  kubectl     Helm
+     │         │
+     └────┬────┘
+          ▼
+   Kubernetes workloads
+```
 
 ---
 
 # AWS CLI en 60 segundos
 
-AWS CLI sigue la estructura general:
-
-```bash
-aws <servicio> <operacion> [opciones]
-```
-
-Ejemplos:
-
 ```bash
 aws sts get-caller-identity
 aws s3 ls
 aws ec2 describe-instances
-aws lambda list-functions
 aws eks list-clusters
 ```
 
-Para descubrir comandos sin salir de la terminal:
-
-```bash
-aws help
-aws ec2 help
-aws ec2 describe-instances help
-```
-
-Comprobar versión:
-
-```bash
-aws --version
-```
-
-AWS recomienda utilizar actualmente **AWS CLI v2**.
-
----
-
-## Configuración inicial de AWS CLI
-
-Configuración clásica:
+Configuración:
 
 ```bash
 aws configure
-```
-
-Consulta de configuración efectiva:
-
-```bash
 aws configure list
 aws configure list-profiles
 ```
-
-Validar identidad activa:
-
-```bash
-aws sts get-caller-identity
-```
-
-Ejecutar con un perfil concreto:
-
-```bash
-aws sts get-caller-identity --profile desarrollo
-```
-
-> Evitá utilizar credenciales del usuario raíz. En entornos reales preferí roles, credenciales temporales, IAM Identity Center/SSO y mínimo privilegio.
 
 ---
 
 # kubectl en 60 segundos
 
-La estructura conceptual es:
-
 ```bash
-kubectl <comando> <tipo-de-recurso> [nombre] [opciones]
-```
-
-Ejemplos:
-
-```bash
-kubectl get pods
-kubectl get deployments
-kubectl describe pod api-7d9c8f76d8-abc12
-kubectl logs api-7d9c8f76d8-abc12
+kubectl config current-context
+kubectl get nodes
+kubectl get pods -A
+kubectl describe pod <pod>
+kubectl logs <pod>
 kubectl apply -f deployment.yaml
 ```
 
-Antes de modificar cualquier cluster, comprobá dónde estás trabajando:
+Antes de modificar un cluster:
 
 ```bash
 kubectl config current-context
-kubectl config get-contexts
-kubectl cluster-info
+kubectl config view --minify
 ```
-
-Este hábito evita una de las fallas operativas más comunes: ejecutar correctamente un comando sobre **el cluster equivocado**.
 
 ---
 
-## Flujo mental de Kubernetes
+# Terraform en 60 segundos
 
-```text
-kubectl
-   │
-   ▼
-Kubernetes API Server
-   │
-   ├── Deployments / StatefulSets / DaemonSets
-   ├── Pods
-   ├── Services / Ingress
-   ├── ConfigMaps / Secrets
-   ├── Jobs / CronJobs
-   └── Nodes / Namespaces / RBAC
+```bash
+terraform init
+terraform fmt -check -recursive
+terraform validate
+terraform plan
+terraform apply
 ```
 
-`kubectl` no administra contenedores directamente. Envía solicitudes a la API de Kubernetes, que mantiene el **estado deseado** del cluster.
+Para CI/CD y cambios revisados:
+
+```bash
+terraform plan -out=tfplan
+terraform apply tfplan
+```
+
+---
+
+# Helm en 60 segundos
+
+```bash
+helm repo update
+helm lint ./chart
+helm template mi-app ./chart
+helm upgrade --install mi-app ./chart \
+  --namespace mi-app \
+  --create-namespace \
+  --wait
+```
+
+Rollback:
+
+```bash
+helm history mi-app -n mi-app
+helm rollback mi-app <revision> -n mi-app
+```
+
+---
+
+## Flujo combinado AWS + Terraform + EKS + Helm/kubectl
+
+```text
+Terraform
+   │
+   ├── VPC / IAM / EKS / Node Groups
+   ▼
+AWS / EKS
+   │
+   ├── aws eks update-kubeconfig
+   ▼
+Kubernetes
+   │
+   ├── kubectl
+   └── Helm
+```
+
+Terraform gestiona infraestructura; `kubectl` y Helm operan recursos Kubernetes. Mantener esa separación ayuda a evitar estados duplicados y ownership ambiguo.
 
 ---
 
@@ -184,21 +228,33 @@ Kubernetes API Server
 ```bash
 aws s3 rm s3://bucket --recursive
 aws ec2 terminate-instances --instance-ids i-xxxxxxxx
-aws cloudformation delete-stack --stack-name produccion
-aws rds delete-db-instance --db-instance-identifier produccion
 ```
 
 ### Kubernetes
 
 ```bash
 kubectl delete namespace produccion
-kubectl delete -f .
-kubectl replace --force -f recurso.yaml
 kubectl drain <node>
 kubectl scale deployment <nombre> --replicas=0
 ```
 
-Un comando válido puede tener un impacto operativo enorme. Antes de operaciones destructivas revisá **cuenta, región, perfil, cluster, context y namespace**.
+### Terraform
+
+```bash
+terraform destroy
+terraform state rm <address>
+terraform force-unlock <lock-id>
+```
+
+### Helm
+
+```bash
+helm uninstall <release>
+helm rollback <release> <revision>
+helm upgrade <release> <chart> --force
+```
+
+Antes de operaciones de riesgo revisá **cuenta, región, perfil, cluster, context, namespace, workspace, backend, release y plan**.
 
 ---
 
@@ -206,40 +262,34 @@ Un comando válido puede tener un impacto operativo enorme. Antes de operaciones
 
 ### AWS CLI
 
-- Guía oficial en español: <https://docs.aws.amazon.com/es_es/cli/latest/userguide/>
-- Referencia completa de comandos: <https://docs.aws.amazon.com/cli/latest/reference/>
-- Instalación AWS CLI v2: <https://docs.aws.amazon.com/es_es/cli/latest/userguide/getting-started-install.html>
-- Ejemplos oficiales: <https://docs.aws.amazon.com/es_es/cli/latest/userguide/cli-chap-code-examples.html>
+- <https://docs.aws.amazon.com/es_es/cli/latest/userguide/>
+- <https://docs.aws.amazon.com/cli/latest/reference/>
 
 ### Kubernetes / kubectl
 
-- Documentación de kubectl: <https://kubernetes.io/docs/reference/kubectl/>
-- Quick Reference oficial: <https://kubernetes.io/docs/reference/kubectl/quick-reference/>
-- Cheat sheet: <https://kubernetes.io/docs/reference/kubectl/quick-reference/>
-- Documentación en español: <https://kubernetes.io/es/docs/reference/>
+- <https://kubernetes.io/docs/reference/kubectl/>
+- <https://kubernetes.io/docs/reference/kubectl/quick-reference/>
+- <https://kubernetes.io/es/docs/reference/>
 
-> Algunas páginas traducidas de Kubernetes pueden estar por detrás de la versión inglesa. Para comportamiento exacto de una versión reciente, verificá siempre la referencia inglesa correspondiente a tu versión de Kubernetes.
+### Amazon EKS
 
----
+- <https://docs.aws.amazon.com/eks/latest/userguide/>
 
-## Convenciones utilizadas
+### Terraform
 
-Los valores entre `< >` deben reemplazarse:
+- <https://developer.hashicorp.com/terraform>
+- <https://developer.hashicorp.com/terraform/cli>
+- <https://registry.terraform.io/providers/hashicorp/aws/latest/docs>
 
-```bash
-aws s3 ls s3://<bucket>
-kubectl get pod <pod>
-```
+### Helm
 
-Variables útiles en ejemplos:
+- <https://helm.sh/docs/>
+- <https://helm.sh/docs/helm/>
 
-```bash
-export AWS_PROFILE=desarrollo
-export AWS_REGION=us-east-1
-export NAMESPACE=mi-app
-```
+### GitHub Actions
 
-Los ejemplos priorizan Bash. Cuando una diferencia de PowerShell sea relevante, se indica explícitamente.
+- <https://docs.github.com/actions>
+- <https://docs.github.com/actions/deployment>
 
 ---
 
@@ -247,11 +297,14 @@ Los ejemplos priorizan Bash. Cuando una diferencia de PowerShell sea relevante, 
 
 1. Confirmar identidad y destino antes de modificar infraestructura.
 2. Aplicar mínimo privilegio.
-3. No versionar access keys, tokens, kubeconfigs ni secretos.
-4. Preferir infraestructura declarativa para cambios repetibles.
-5. Utilizar `--dry-run`, `kubectl diff` o equivalentes cuando estén disponibles.
-6. Registrar cambios críticos y operar producción con mecanismos de revisión.
-7. Conocer el rollback antes de ejecutar un cambio de riesgo.
+3. Preferir OIDC y credenciales temporales frente a claves permanentes.
+4. No versionar secretos, kubeconfigs ni states sensibles.
+5. Usar `terraform plan`, `kubectl diff`, `helm template` y dry-runs antes de cambios relevantes.
+6. Separar CI de CD y proteger producción.
+7. Usar state remoto y locking para Terraform colaborativo.
+8. Mantener imágenes y releases trazables por commit SHA o versión.
+9. Conocer el rollback antes de ejecutar el cambio.
+10. Diagnosticar de forma sistemática antes de aplicar correcciones ad hoc.
 
 ---
 
@@ -261,4 +314,4 @@ El contenido está orientado a aprendizaje y referencia técnica. Si encontrás 
 
 ---
 
-**Este repositorio no está afiliado oficialmente con Amazon Web Services ni con The Kubernetes Authors/CNCF.**
+**Este repositorio no está afiliado oficialmente con Amazon Web Services, HashiCorp, GitHub, Helm ni The Kubernetes Authors/CNCF.**
