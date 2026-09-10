@@ -1,4 +1,4 @@
-# Cheat Sheet — AWS CLI + kubectl
+# Cheat Sheet — AWS CLI + kubectl + Terraform
 
 ## AWS CLI
 
@@ -170,10 +170,85 @@ kubectl debug -it pod/<pod> --image=busybox
 
 ---
 
+## Terraform
+
+### Workflow básico
+
+```bash
+terraform version
+terraform init
+terraform fmt -check -recursive
+terraform validate
+terraform plan
+terraform apply
+```
+
+### Plan guardado
+
+```bash
+terraform plan -out=tfplan
+terraform show tfplan
+terraform apply tfplan
+```
+
+### Variables y outputs
+
+```bash
+terraform plan -var-file="prod.tfvars"
+terraform output
+terraform output -json
+```
+
+### State
+
+```bash
+terraform state list
+terraform state show <address>
+terraform state mv <origen> <destino>
+terraform state rm <address>
+```
+
+### Import
+
+```bash
+terraform import <address> <id>
+```
+
+### Workspaces
+
+```bash
+terraform workspace list
+terraform workspace show
+terraform workspace new dev
+terraform workspace select dev
+```
+
+### Providers y diagnóstico
+
+```bash
+terraform providers
+terraform show
+terraform console
+TF_LOG=DEBUG terraform plan
+```
+
+### Destrucción
+
+```bash
+terraform plan -destroy
+terraform destroy
+```
+
+> Revisá cuenta, backend, workspace y plan antes de ejecutar operaciones destructivas.
+
+---
+
 ## Validación previa a cambios importantes
 
 ```bash
 aws sts get-caller-identity
 kubectl config current-context
 kubectl config view --minify
+terraform workspace show
+terraform plan
 ```
