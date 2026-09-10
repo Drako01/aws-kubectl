@@ -1,8 +1,22 @@
 # AWS CLI & kubectl — Guía Profesional
 
 <p align="center">
-  <img src="https://img.shields.io/badge/AWS%20CLI-v2-FF9900?logo=amazonaws&logoColor=white" alt="AWS CLI v2" />
-  <img src="https://img.shields.io/badge/kubectl-Kubernetes-326CE5?logo=kubernetes&logoColor=white" alt="kubectl" />
+  <a href="https://aws.amazon.com/cli/" target="_blank" rel="noreferrer">
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="Amazon Web Services" width="280" />
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://kubernetes.io/docs/reference/kubectl/" target="_blank" rel="noreferrer">
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/kubernetes/kubernetes-plain-wordmark.svg" alt="Kubernetes" width="220" />
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://aws.amazon.com/cli/" target="_blank" rel="noreferrer">
+    <img src="https://img.shields.io/badge/AWS%20CLI-v2-FF9900?logo=amazonaws&logoColor=white" alt="AWS CLI v2" />
+  </a>
+  <a href="https://kubernetes.io/docs/reference/kubectl/" target="_blank" rel="noreferrer">
+    <img src="https://img.shields.io/badge/kubectl-Kubernetes-326CE5?logo=kubernetes&logoColor=white" alt="kubectl" />
+  </a>
   <img src="https://img.shields.io/badge/Idioma-Español-informational" alt="Español" />
 </p>
 
