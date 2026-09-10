@@ -4,6 +4,22 @@ Todos los cambios relevantes de esta guía se documentan aquí.
 
 El versionado sigue Semantic Versioning cuando corresponde.
 
+## [1.1.0] - 2026-09-10
+
+### Added
+
+- guía profesional de Terraform en español;
+- fundamentos de Infrastructure as Code y workflow `init → plan → apply`;
+- variables, outputs, locals, data sources y providers;
+- state local y remoto, backends, locking, drift, import y workspaces;
+- integración de Terraform con AWS;
+- módulos, `for_each`, `count`, lifecycle y validaciones;
+- seguridad de credenciales y datos sensibles;
+- troubleshooting de Terraform y AWS Provider;
+- flujo conceptual Terraform + AWS + EKS + kubectl;
+- comandos Terraform incorporados al cheat sheet;
+- logo, badge y enlaces oficiales de Terraform en el README.
+
 ## [1.0.0] - 2026-09-10
 
 ### Added
