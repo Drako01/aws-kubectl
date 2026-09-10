@@ -1,12 +1,16 @@
-# AWS CLI & kubectl — Guía Profesional
+# AWS CLI, kubectl & Terraform — Guía Profesional
 
 <p align="center">
   <a href="https://aws.amazon.com/cli/" target="_blank" rel="noreferrer">
-    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="Amazon Web Services" width="280" />
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="Amazon Web Services" width="250" />
   </a>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://kubernetes.io/docs/reference/kubectl/" target="_blank" rel="noreferrer">
-    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/kubernetes/kubernetes-plain-wordmark.svg" alt="Kubernetes" width="220" />
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/kubernetes/kubernetes-plain-wordmark.svg" alt="Kubernetes" width="190" />
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://developer.hashicorp.com/terraform" target="_blank" rel="noreferrer">
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/terraform/terraform-original-wordmark.svg" alt="Terraform" width="210" />
   </a>
 </p>
 
@@ -17,11 +21,14 @@
   <a href="https://kubernetes.io/docs/reference/kubectl/" target="_blank" rel="noreferrer">
     <img src="https://img.shields.io/badge/kubectl-Kubernetes-326CE5?logo=kubernetes&logoColor=white" alt="kubectl" />
   </a>
-  <img src="https://img.shields.io/badge/Idioma-Español-informational" alt="Español" />
+  <a href="https://developer.hashicorp.com/terraform" target="_blank" rel="noreferrer">
+    <img src="https://img.shields.io/badge/Terraform-IaC-844FBA?logo=terraform&logoColor=white" alt="Terraform" />
+  </a>
+  <img src="https://img.shields.io/badge/Idioma-Espa%C3%B1ol-informational" alt="Español" />
 </p>
 
 <p align="center">
-  <strong>Guía práctica en español para administrar AWS desde la terminal y operar clusters Kubernetes con kubectl.</strong>
+  <strong>Guía práctica en español para administrar AWS, operar Kubernetes y gestionar infraestructura como código con Terraform.</strong>
 </p>
 
 <p align="center">
@@ -32,10 +39,11 @@
 
 ## Objetivo
 
-Este repositorio está pensado como **guía de aprendizaje, referencia operativa y cheat sheet** para dos herramientas fundamentales de infraestructura y DevOps:
+Este repositorio está pensado como **guía de aprendizaje, referencia operativa y cheat sheet** para tres herramientas fundamentales de Cloud, DevOps e Infrastructure as Code:
 
 - **AWS CLI v2**, para trabajar con servicios de Amazon Web Services desde la terminal;
-- **kubectl**, para consultar, desplegar, modificar, depurar y administrar recursos de Kubernetes.
+- **kubectl**, para consultar, desplegar, modificar, depurar y administrar recursos de Kubernetes;
+- **Terraform**, para definir y operar infraestructura declarativa, reproducible y versionable.
 
 No intenta reemplazar la documentación oficial. La idea es ofrecer una capa más práctica: explicar **qué hace cada comando, cuándo usarlo, qué riesgo tiene y cómo encaja en un flujo real**.
 
@@ -56,7 +64,10 @@ No intenta reemplazar la documentación oficial. La idea es ofrecer una capa má
 | kubectl | [07 — Observabilidad, debug y operación](docs/kubectl/03-observabilidad-debug-operacion.md) | logs, exec, port-forward, top, events, rollout, scale, drain, cordon y diagnóstico |
 | kubectl | [08 — Referencia de comandos](docs/kubectl/04-referencia-comandos.md) | Índice explicado de los comandos principales de kubectl |
 | AWS + Kubernetes | [09 — EKS con AWS CLI y kubectl](docs/eks/01-aws-eks-kubectl.md) | Kubeconfig, acceso, ECR, diagnóstico y flujo de trabajo EKS |
-| Consulta rápida | [Cheat Sheet](docs/cheatsheet.md) | Comandos de uso cotidiano de AWS CLI y kubectl |
+| Terraform | [10 — Fundamentos, instalación y workflow](docs/terraform/01-fundamentos-instalacion-workflow.md) | HCL, providers, init, fmt, validate, plan, apply, destroy, variables y outputs |
+| Terraform | [11 — State, backends e importación](docs/terraform/02-state-backends-import.md) | State local/remoto, S3 backend, locking, import, moved blocks, drift y workspaces |
+| Terraform + AWS | [12 — AWS, módulos, seguridad y troubleshooting](docs/terraform/03-aws-modulos-seguridad-troubleshooting.md) | AWS Provider, módulos, lifecycle, credenciales, secretos, EKS y diagnóstico |
+| Consulta rápida | [Cheat Sheet](docs/cheatsheet.md) | Comandos cotidianos de AWS CLI, kubectl y Terraform |
 
 ---
 
@@ -92,28 +103,14 @@ Comprobar versión:
 aws --version
 ```
 
-AWS recomienda utilizar actualmente **AWS CLI v2**.
-
 ---
 
 ## Configuración inicial de AWS CLI
 
-Configuración clásica:
-
 ```bash
 aws configure
-```
-
-Consulta de configuración efectiva:
-
-```bash
 aws configure list
 aws configure list-profiles
-```
-
-Validar identidad activa:
-
-```bash
 aws sts get-caller-identity
 ```
 
@@ -145,7 +142,7 @@ kubectl logs api-7d9c8f76d8-abc12
 kubectl apply -f deployment.yaml
 ```
 
-Antes de modificar cualquier cluster, comprobá dónde estás trabajando:
+Antes de modificar cualquier cluster:
 
 ```bash
 kubectl config current-context
@@ -157,23 +154,60 @@ Este hábito evita una de las fallas operativas más comunes: ejecutar correctam
 
 ---
 
-## Flujo mental de Kubernetes
+# Terraform en 60 segundos
 
-```text
-kubectl
-   │
-   ▼
-Kubernetes API Server
-   │
-   ├── Deployments / StatefulSets / DaemonSets
-   ├── Pods
-   ├── Services / Ingress
-   ├── ConfigMaps / Secrets
-   ├── Jobs / CronJobs
-   └── Nodes / Namespaces / RBAC
+Terraform trabaja declarativamente: se describe la infraestructura deseada y Terraform calcula cómo llegar a ese estado.
+
+Workflow esencial:
+
+```bash
+terraform init
+terraform fmt -check -recursive
+terraform validate
+terraform plan
+terraform apply
 ```
 
-`kubectl` no administra contenedores directamente. Envía solicitudes a la API de Kubernetes, que mantiene el **estado deseado** del cluster.
+Para equipos y CI/CD es preferible guardar el plan revisado:
+
+```bash
+terraform plan -out=tfplan
+terraform apply tfplan
+```
+
+Antes de aplicar cambios sobre AWS:
+
+```bash
+aws sts get-caller-identity
+terraform workspace show
+terraform plan
+```
+
+El `state` es parte crítica del funcionamiento de Terraform. En entornos colaborativos conviene utilizar un backend remoto con controles de acceso y locking.
+
+---
+
+## Flujo combinado AWS + Terraform + EKS + kubectl
+
+```text
+Terraform
+   │
+   ├── VPC / IAM / EKS / Node Groups
+   │
+   ▼
+AWS
+   │
+   │ aws eks update-kubeconfig
+   ▼
+kubectl
+   │
+   ├── Deployments
+   ├── Services
+   ├── ConfigMaps / Secrets
+   └── Workloads Kubernetes
+```
+
+Terraform resulta especialmente útil para convertir cambios manuales de infraestructura en cambios **reproducibles, auditables y revisables mediante Pull Requests**.
 
 ---
 
@@ -198,7 +232,16 @@ kubectl drain <node>
 kubectl scale deployment <nombre> --replicas=0
 ```
 
-Un comando válido puede tener un impacto operativo enorme. Antes de operaciones destructivas revisá **cuenta, región, perfil, cluster, context y namespace**.
+### Terraform
+
+```bash
+terraform destroy
+terraform apply -auto-approve
+terraform state rm <address>
+terraform force-unlock <lock-id>
+```
+
+Un comando válido puede tener un impacto operativo enorme. Antes de operaciones destructivas revisá **cuenta, región, perfil, cluster, context, namespace, workspace, backend y plan**.
 
 ---
 
@@ -215,10 +258,17 @@ Un comando válido puede tener un impacto operativo enorme. Antes de operaciones
 
 - Documentación de kubectl: <https://kubernetes.io/docs/reference/kubectl/>
 - Quick Reference oficial: <https://kubernetes.io/docs/reference/kubectl/quick-reference/>
-- Cheat sheet: <https://kubernetes.io/docs/reference/kubectl/quick-reference/>
 - Documentación en español: <https://kubernetes.io/es/docs/reference/>
 
 > Algunas páginas traducidas de Kubernetes pueden estar por detrás de la versión inglesa. Para comportamiento exacto de una versión reciente, verificá siempre la referencia inglesa correspondiente a tu versión de Kubernetes.
+
+### Terraform
+
+- Documentación: <https://developer.hashicorp.com/terraform>
+- Terraform CLI: <https://developer.hashicorp.com/terraform/cli>
+- Lenguaje Terraform: <https://developer.hashicorp.com/terraform/language>
+- Tutorials oficiales: <https://developer.hashicorp.com/terraform/tutorials>
+- AWS Provider: <https://registry.terraform.io/providers/hashicorp/aws/latest/docs>
 
 ---
 
@@ -229,14 +279,16 @@ Los valores entre `< >` deben reemplazarse:
 ```bash
 aws s3 ls s3://<bucket>
 kubectl get pod <pod>
+terraform state show <resource-address>
 ```
 
-Variables útiles en ejemplos:
+Variables útiles:
 
 ```bash
 export AWS_PROFILE=desarrollo
 export AWS_REGION=us-east-1
 export NAMESPACE=mi-app
+export TF_VAR_environment=dev
 ```
 
 Los ejemplos priorizan Bash. Cuando una diferencia de PowerShell sea relevante, se indica explícitamente.
@@ -247,11 +299,13 @@ Los ejemplos priorizan Bash. Cuando una diferencia de PowerShell sea relevante, 
 
 1. Confirmar identidad y destino antes de modificar infraestructura.
 2. Aplicar mínimo privilegio.
-3. No versionar access keys, tokens, kubeconfigs ni secretos.
+3. No versionar access keys, tokens, kubeconfigs, states ni secretos.
 4. Preferir infraestructura declarativa para cambios repetibles.
-5. Utilizar `--dry-run`, `kubectl diff` o equivalentes cuando estén disponibles.
+5. Utilizar `terraform plan`, `--dry-run`, `kubectl diff` o equivalentes antes de cambios relevantes.
 6. Registrar cambios críticos y operar producción con mecanismos de revisión.
-7. Conocer el rollback antes de ejecutar un cambio de riesgo.
+7. Utilizar state remoto y locking para Terraform colaborativo.
+8. Versionar `.terraform.lock.hcl` y controlar versiones de providers/módulos.
+9. Conocer el rollback o recuperación antes de ejecutar cambios de riesgo.
 
 ---
 
@@ -261,4 +315,4 @@ El contenido está orientado a aprendizaje y referencia técnica. Si encontrás 
 
 ---
 
-**Este repositorio no está afiliado oficialmente con Amazon Web Services ni con The Kubernetes Authors/CNCF.**
+**Este repositorio no está afiliado oficialmente con Amazon Web Services, HashiCorp ni The Kubernetes Authors/CNCF.**
