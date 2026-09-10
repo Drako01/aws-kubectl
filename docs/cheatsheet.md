@@ -1,4 +1,4 @@
-# Cheat Sheet — AWS CLI + kubectl + Terraform
+# Cheat Sheet — DevOps Toolkit
 
 ## AWS CLI
 
@@ -42,11 +42,15 @@ aws ec2 describe-security-groups
 
 ```bash
 aws ecr describe-repositories
+aws ecr list-images --repository-name <repo>
 aws ecs list-clusters
 aws ecs list-services --cluster <cluster>
 aws eks list-clusters
 aws eks describe-cluster --name <cluster>
 aws eks update-kubeconfig --region <region> --name <cluster>
+aws eks list-access-entries --cluster-name <cluster>
+aws eks list-nodegroups --cluster-name <cluster>
+aws eks list-addons --cluster-name <cluster>
 ```
 
 ### Lambda / Logs / SSM
@@ -111,6 +115,7 @@ kubectl get nodes
 kubectl describe pod <pod>
 kubectl explain deployment.spec
 kubectl diff -f ./k8s/
+kubectl apply --dry-run=client -f ./k8s/
 kubectl apply -f ./k8s/
 ```
 
@@ -158,6 +163,7 @@ kubectl top pods -A
 kubectl auth can-i get pods
 kubectl auth whoami
 kubectl cordon <node>
+kubectl drain <node> --ignore-daemonsets
 kubectl uncordon <node>
 ```
 
@@ -239,7 +245,66 @@ terraform plan -destroy
 terraform destroy
 ```
 
-> Revisá cuenta, backend, workspace y plan antes de ejecutar operaciones destructivas.
+---
+
+## Helm
+
+### Versión y entorno
+
+```bash
+helm version
+helm env
+```
+
+### Repositorios
+
+```bash
+helm repo add <nombre> <url>
+helm repo list
+helm repo update
+helm search repo <termino>
+```
+
+### Inspección y validación
+
+```bash
+helm show chart <repo/chart>
+helm show values <repo/chart>
+helm lint ./chart
+helm template mi-app ./chart -f values.yaml
+```
+
+### Install / Upgrade
+
+```bash
+helm install mi-app ./chart
+helm upgrade --install mi-app ./chart \
+  --namespace mi-app \
+  --create-namespace \
+  --wait \
+  --timeout 5m
+```
+
+### Releases
+
+```bash
+helm list -A
+helm status mi-app -n <namespace>
+helm history mi-app -n <namespace>
+helm get values mi-app -n <namespace>
+```
+
+### Rollback
+
+```bash
+helm rollback mi-app <revision> -n <namespace>
+```
+
+### Uninstall
+
+```bash
+helm uninstall mi-app -n <namespace>
+```
 
 ---
 
@@ -247,8 +312,21 @@ terraform destroy
 
 ```bash
 aws sts get-caller-identity
+aws configure get region
 kubectl config current-context
 kubectl config view --minify
+kubectl auth whoami
 terraform workspace show
 terraform plan
+helm list -A
+```
+
+## Diagnóstico rápido Kubernetes
+
+```bash
+kubectl get nodes
+kubectl get pods -A
+kubectl get events -A --sort-by=.metadata.creationTimestamp
+kubectl describe pod <pod> -n <namespace>
+kubectl logs <pod> -n <namespace> --previous
 ```
